@@ -1,0 +1,47 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            {% for blog in blogs %}
+                <div class="col-md-4">
+                    <div class="card mb-4">
+    <img src="{{ blog.photo.url }}" class="card-img-top" alt="{{ blog.title }}">
+    <div class="card-body text-center"> <!-- Добавлен класс "text-center" для центрирования содержимого -->
+        <h5 class="card-title">
+            <a href="{% url 'blog:detail_page' blog.pk %}" style="text-decoration: none;">{{ blog.title }}</a>
+        </h5>
+    </div>
+</div>
+
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="pagination justify-content-center">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">&laquo; Самый первый</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Предыдущий</a>
+                </li>
+            {% endif %}
+            <li class="page-item active">
+                <span class="page-link">
+                    Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+                </span>
+            </li>
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Следующий</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Самый последний &raquo;</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}

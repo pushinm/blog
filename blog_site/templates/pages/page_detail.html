@@ -1,0 +1,39 @@
+{% extends 'layout/base.html' %}
+{% block content %}
+    <div style="max-width:1000px">
+        <div style="display:flex; align-items:center; min-width:300; max-width:850; flex-direction: column;">
+            <p>{{ blog.title }}</p>
+                <img src="{{ blog.photo.url }}" style="max-height: 600px;">
+
+            <div>
+                {{ blog.text }}
+            </div>
+            <div style="display:flex; flex:direction:raw;">
+                <p>Автор: <a href="#">{{ blog.author|upper }}</a></p>
+                {% if blog.published_at %}
+                    <p> Опубликовано: {{ blog.published_at }}</p>
+                {% endif %}
+            </div>
+            <p>Создано: {{ blog.created_at|date:"d-M-Y" }}</p>
+        </div>
+         <a href="{% url 'blog:all_pages' %}"><button style="color:blue; padding:10px;">назад</button></a>
+    </div>
+    <div>
+        {% if not blog.blog_of_tes.all %}
+            <p>no comments</p>
+        {% else %}
+        {% for t in blog.blog_of_tes.all %}
+                {% if t.active == True %}
+                    <p>{{ t.testimonial }}</p>
+                {% endif %}
+        {% endfor %}
+        {% endif %}
+    </div>
+    <div>
+     <form method="POST" >
+         {% csrf_token %}
+         {{ form.as_p }}
+         <button type="submit">Оставить комментарий</button>
+     </form>
+    </div>
+{% endblock %}

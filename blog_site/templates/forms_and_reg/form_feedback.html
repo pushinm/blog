@@ -1,0 +1,18 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <h1 class="text-center mb-4">Свяжитесь с нами</h1>
+                <form method="post" class="border rounded p-5" action="{% url 'f:feedback' %}">
+                    {% csrf_token %}
+                    <input name="inp1" placeholder="name">
+                    <input name="inp2" placeholder="number">
+                    {{ form.as_p }}
+                    <input type="submit" value="Отправить">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

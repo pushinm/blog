@@ -1,0 +1,21 @@
+{% extends 'layout/base.html' %}
+{% block content %}
+<h1>Вход</h1>
+{% if user.is_authenticated %}
+<p>Вы уже выполнили вход</p>
+{% else %}
+<table>
+    <form method="POST" action="">
+        <tr>
+            {% csrf_token %}
+            {{ form.as_table }}
+        </tr>
+        <tr>
+            <input type="hidden" name="next" value="/">
+            <input type="submit" value="Войти">
+        </tr>
+
+    </form>
+</table>
+{% endif %}
+{% endblock content %}

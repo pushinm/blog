@@ -1,0 +1,24 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+   <div class="container">
+      <div class="text-center mt-4">
+         <h1>Автор: {{ current_user.first_name }} {{ current_user.last_name }}</h1>
+      </div>
+
+      <div class="row mt-4">
+         {% for blog in object.author_of_blog.all %}
+            <div class="col-md-4">
+               <a href="{% url 'blog:detail_page' blog.pk %}">
+                  <div class="card mb-4">
+                  <img src="{{ blog.photo.url }}" class="card-img-top" alt="{{ blog.title }}">
+                  <div class="card-body">
+                     <h5 class="card-title">{{ blog.title }}</h5>
+                  </div>
+               </div>
+               </a>
+            </div>
+         {% endfor %}
+      </div>
+   </div>
+{% endblock %}
