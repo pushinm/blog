@@ -1,5 +1,6 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView, FormView, UpdateView
+from testimonials.models import Testimonial
 
 from testimonials.models import Testimonial
 from .models import Blog
@@ -7,6 +8,8 @@ from .forms import BlogForm
 from django.forms import modelformset_factory
 from testimonials.forms import CommentForm
 from users_.models import User
+from icecream import ic
+from django.db import transaction
 
 
 # Create your views here.
@@ -42,3 +45,39 @@ def blog_update(request):
         'formset': formset
     }
     return render(request=request, template_name='pages/page_edit.html', context=context)
+
+
+def delete_article(request, pk):
+    article = get_object_or_404(Blog, pk=pk)
+    print(article)
+    if request.method == 'GET':
+        return article.delete()
+
+
+def delete_comments(request, pk):
+    article = get_object_or_404(Blog, pk=pk)
+    comments = article.blog_of_tes.all()
+    print(comments)
+    if request.method == 'GET':
+        return comments.delete()
+    # ic(article)
+    # ic(comments)
+
+
+@transaction.atomic
+def delete_blog_with_comments(request, pk):
+    delete_comments(request, pk)
+    delete_article(request, pk)
+    return redirect('/')
+
+
+def add_comment(request, pk):
+    template_name = 'pages/page_detail.html'
+    blog = Blog.objects.get(pk=pk)
+    if request.method == 'POST':
+        text = request.POST.get('message')
+        print(text)
+        Testimonial.objects.create(testimonial=text, blog=blog)
+        return redirect(f'/blogdetail-{blog.pk}/')
+        #return render(request=request, template_name=template_name, context={'text': text})
+    return render(request=request, template_name=template_name, context={'text': '1'})

@@ -1,14 +1,15 @@
 {% extends 'layout/base.html' %}
+
 {% block content %}
-    <div style="max-width:1000px">
-        <div style="display:flex; align-items:center; min-width:300; max-width:850; flex-direction: column;">
+    <div class="container" style="max-width: 1000px">
+        <div class="blog-details" style="display: flex; align-items: center; min-width: 300px; max-width: 850px; flex-direction: column;">
             <p>{{ blog.title }}</p>
-                <img src="{{ blog.photo.url }}" style="max-height: 600px;">
+            <img src="{{ blog.photo.url }}" style="max-height: 600px;">
 
             <div>
                 {{ blog.text }}
             </div>
-            <div style="display:flex; flex:direction:raw;">
+            <div class="author-info" style="display: flex; flex-direction: row;">
                 <p>Автор: <a href="#">{{ blog.author|upper }}</a></p>
                 {% if blog.published_at %}
                     <p> Опубликовано: {{ blog.published_at }}</p>
@@ -16,24 +17,48 @@
             </div>
             <p>Создано: {{ blog.created_at|date:"d-M-Y" }}</p>
         </div>
-         <a href="{% url 'blog:all_pages' %}"><button style="color:blue; padding:10px;">назад</button></a>
+        <a href="{% url 'blog:all_pages' %}"><button class="back-button" style="color: blue; padding: 10px;">Назад</button></a>
+        {% if user.is_authenticated  %}
+        <p><a href="{% url 'blog:delete_blog' blog.pk  %}"> Удалить блог </a></p>
+        {% endif %}
     </div>
-    <div>
+    <div class="comments-section">
         {% if not blog.blog_of_tes.all %}
-            <p>no comments</p>
+            <p>Нет комментариев</p>
         {% else %}
         {% for t in blog.blog_of_tes.all %}
-                {% if t.active == True %}
-                    <p>{{ t.testimonial }}</p>
-                {% endif %}
+            {% if t.active == True %}
+                <p>{{ t.testimonial }}</p>
+            {% endif %}
         {% endfor %}
         {% endif %}
     </div>
-    <div>
-     <form method="POST" >
-         {% csrf_token %}
-         {{ form.as_p }}
-         <button type="submit">Оставить комментарий</button>
-     </form>
+
+    <!-- Кнопка "Оставить комментарий" -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#commentModal">
+        Оставить комментарий
+    </button>
+
+    <!-- Модальное окно с формой -->
+    <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="commentModalLabel">Оставить комментарий</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{% url 'blog:add_comment' blog.pk %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Сообщение</label>
+                            <textarea class="form-control" id="message" name="message" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Отправить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

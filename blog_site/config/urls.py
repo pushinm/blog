@@ -32,6 +32,7 @@ urlpatterns = [
     path('', include('blog.urls', namespace='blog.blog')),
     path('users/', include('users_.urls', namespace='users_.users')),
     path('feedback/', include('feedback.urls', namespace='feedback.f')),
+    path('comments/', include('testimonials.urls', namespace='testimonials.comment')),
     path('login/', MyLoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(template_name='logs/logout.html'), name='logout')
 ]

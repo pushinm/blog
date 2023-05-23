@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'users_.apps.UsersConfig',
     'testimonials.apps.TestimonialsConfig',
     'feedback.apps.FeedbackConfig',
+    'customers.apps.CustomersConfig',
 ]
 
 MIDDLEWARE = [
