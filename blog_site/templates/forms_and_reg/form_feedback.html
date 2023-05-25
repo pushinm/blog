@@ -7,9 +7,7 @@
                 <h1 class="text-center mb-4">Свяжитесь с нами</h1>
                 <form method="post" class="border rounded p-5" action="{% url 'f:feedback' %}">
                     {% csrf_token %}
-                    <input name="inp1" placeholder="name">
-                    <input name="inp2" placeholder="number">
-                    {{ form }}
+                    <table>{{ form }}</table>
                     <input type="submit" value="Отправить">
                 </form>
             </div>

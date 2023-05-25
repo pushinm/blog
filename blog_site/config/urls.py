@@ -33,6 +33,7 @@ urlpatterns = [
     path('users/', include('users_.urls', namespace='users_.users')),
     path('feedback/', include('feedback.urls', namespace='feedback.f')),
     path('comments/', include('testimonials.urls', namespace='testimonials.comment')),
+    path('captcha/', include('captcha.urls')),
     path('login/', MyLoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(template_name='logs/logout.html'), name='logout')
 ]
