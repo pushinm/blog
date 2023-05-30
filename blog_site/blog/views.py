@@ -8,7 +8,7 @@ from .forms import BlogForm
 from django.forms import modelformset_factory
 from testimonials.forms import CommentForm
 from users_.models import User
-from icecream import ic
+# from icecream import ic
 from django.db import transaction
 
 

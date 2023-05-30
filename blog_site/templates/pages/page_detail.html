@@ -1,5 +1,5 @@
 {% extends 'layout/base.html' %}
-
+{% load bbcode_tags %}
 {% block content %}
     <div class="container" style="max-width: 1000px">
         <div class="blog-details" style="display: flex; align-items: center; min-width: 300px; max-width: 850px; flex-direction: column;">
@@ -51,7 +51,7 @@
                     <form method="post" action="{% url 'blog:add_comment' blog.pk %}">
                         {% csrf_token %}
                         <div class="mb-3">
-                            <label for="message" class="form-label">Сообщение</label>
+                            {{ "[b]Сообщение[/b]"|bbcode }}
                             <textarea class="form-control" id="message" name="message" required></textarea>
                         </div>
 

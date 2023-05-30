@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'captcha',
+    # 'simple_captcha',
+    'precise_bbcode',
     # my apps
     'blog.apps.BlogConfig',
     'users_.apps.UsersConfig',
