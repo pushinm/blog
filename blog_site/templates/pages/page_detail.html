@@ -7,7 +7,7 @@
             <img src="{{ blog.photo.url }}" style="max-height: 600px;">
 
             <div>
-                {{ blog.text }}
+                <p>{{ blog.text.rendered }}</p>
             </div>
             <div class="author-info" style="display: flex; flex-direction: row;">
                 <p>Автор: <a href="#">{{ blog.author|upper }}</a></p>

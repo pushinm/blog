@@ -12,13 +12,13 @@
           </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         {% for author in authors %}
-                            <li><a class="dropdown-item" href="{% url 'users:author_detail' author.pk %}">{{ author.first_name }}{{ author.last_name }}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'authors:author_detail' author.pk %}">{{ author.first_name }}{{ author.last_name }}</a></li>
 
                         {% endfor %}
                     </ul>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'users:create_user' %}">Стать автором</a>
+          <a class="nav-link" href="{% url 'authors:create_author' %}">Стать автором</a>
         </li>
           <li class="nav-item">
           <a class="nav-link" href="{% url 'f:feedback' %}">Обратная связь</a>
@@ -26,6 +26,14 @@
           <li class="nav-item">
           <a class="nav-link" href="{% url 'blog:update_all' %}">Formset</a>
         </li>
+          <li>
+              {% if user.is_authenticated %}
+                <a href="{% url 'blog:create_blog' %}" class="nav-link" ><p>Добавить стаью</p></a>
+              {% else %}
+                <a href="" class="nav-link" onclick="alert('сначала сделайте вход');"><p>Добавить стаью</p></a>
+              {% endif %}
+
+          </li>
           <li>
                         {% if not user.is_authenticated %}
                         <a href="{% url 'login' %}" class="nav-link" ><p>Login</p></a>

@@ -5,7 +5,7 @@
 <p>Вы уже выполнили вход</p>
 {% else %}
 <table>
-    <form method="POST" action="">
+    <form method="POST" action="{% url 'login' %}">
         <tr>
             {% csrf_token %}
             {{ form.as_table }}

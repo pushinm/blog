@@ -1,18 +1,31 @@
 from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
-from django.views.generic import ListView, DetailView, FormView, UpdateView
+from django.views.generic import ListView, DetailView, FormView, UpdateView, CreateView
 from testimonials.models import Testimonial
 
 from testimonials.models import Testimonial
 from .models import Blog
-from .forms import BlogForm
+from .forms import BlogCreationForm
 from django.forms import modelformset_factory
 from testimonials.forms import CommentForm
-from users_.models import User
+from author.models import Author
 # from icecream import ic
 from django.db import transaction
 
 
 # Create your views here.
+
+class CreateBlog(CreateView):
+    model = Blog
+    form_class = BlogCreationForm
+    template_name = 'pages/blog_create.html'
+    success_url = '/'
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.author = self.request.user
+        form.save()
+        return super().form_valid(form)
+
 
 class AllPAges(ListView):
     model = Blog
@@ -22,7 +35,7 @@ class AllPAges(ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['authors'] = User.objects.all()
+        context['authors'] = Author.objects.all()
         return context
 
 
@@ -50,7 +63,7 @@ def blog_update(request):
 def delete_article(request, pk):
     article = get_object_or_404(Blog, pk=pk)
     print(article)
-    if request.method == 'GET':
+    if request.method == 'GET' and request.user == article.author:
         return article.delete()
 
 
@@ -79,5 +92,5 @@ def add_comment(request, pk):
         print(text)
         Testimonial.objects.create(testimonial=text, blog=blog)
         return redirect(f'/blogdetail-{blog.pk}/')
-        #return render(request=request, template_name=template_name, context={'text': text})
+        # return render(request=request, template_name=template_name, context={'text': text})
     return render(request=request, template_name=template_name, context={'text': '1'})

@@ -14,27 +14,24 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import django.contrib.auth.urls
 from django.contrib import admin
 from django.urls import path, include
 
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth.views import LoginView, LogoutView
-
-
-class MyLoginView(LoginView):
-    success_url = 'sldmco;sfiondiosvios'
-    template_name = 'logs/login.html'
-
+from author.views import AuthorLogin
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('blog.urls', namespace='blog.blog')),
-    path('users/', include('users_.urls', namespace='users_.users')),
+    path('users/', include('author.urls', namespace='author.authors')),
     path('feedback/', include('feedback.urls', namespace='feedback.f')),
     path('comments/', include('testimonials.urls', namespace='testimonials.comment')),
+
     # path('captcha/', include('captcha.urls')),
-    path('login/', MyLoginView.as_view(), name='login'),
+    path('login/', AuthorLogin.as_view(), name='login'),
     path('logout/', LogoutView.as_view(template_name='logs/logout.html'), name='logout')
 ]
 

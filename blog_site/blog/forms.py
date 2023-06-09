@@ -1,7 +1,14 @@
 from django.forms import ModelForm
 from .models import Blog
 
-class BlogForm(ModelForm):
+
+class BlogCreationForm(ModelForm):
     class Meta:
-        moel = Blog
-        fields = '__all__'
+        model = Blog
+        fields = ['title', 'photo', 'text', 'additional_docs']
+        labels = {
+            'title': 'Название блога',
+            'photo': 'Фото',
+            'text': 'Текст',
+            'additional_docs': 'Дополнительные документы'
+        }
