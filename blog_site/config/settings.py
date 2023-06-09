@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'testimonials.apps.TestimonialsConfig',
     'feedback.apps.FeedbackConfig',
     'author.apps.AuthorConfig',
+    'custom_tags.apps.CustomTagsConfig',
 ]
 
 MIDDLEWARE = [
