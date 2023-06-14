@@ -5,7 +5,7 @@ from .models import Feedback
 from .forms import FeedbackForm
 # from icecream import ic
 from django.shortcuts import render
-
+from django.core.signing import Signer
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import PermissionRequiredMixin
@@ -56,5 +56,13 @@ def create_feedback(request):
     form = FeedbackForm(request.POST)
     if form.is_valid():
         form.save()
-        return redirect(reverse('blog:all_pages'))
+        name = form.cleaned_data.get("name")
+        phone = form.cleaned_data.get("phone")
+        email = form.cleaned_data.get("email")
+        f_data = f'{name}_{phone}_{email}'
+        signer = Signer()
+        signed_data = signer.sign(f_data)
+        print(signed_data)
+        responce = redirect(reverse('blog:all_pages'))
+        return responce
     return render(request=request, template_name='forms_and_reg/form_feedback.html', context={'form': form})

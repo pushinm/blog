@@ -3,6 +3,7 @@ from author.models import Author
 from precise_bbcode.fields import BBCodeTextField
 from precise_bbcode.bbcode import get_parser
 
+
 def generate_docs_upload_path(instance, filename):
     author = instance.author
     return f'files/docs/{author.pk}/{filename}'
@@ -17,10 +18,6 @@ class Blog(models.Model):
     published_at = models.DateTimeField(verbose_name='', null=True, blank=True)
     author = models.ForeignKey(to=Author, on_delete=models.DO_NOTHING, related_name='author_of_blog')
     additional_docs = models.FileField(upload_to=generate_docs_upload_path, blank=True, null=True)
-
-    # def formatted_text(self):
-    #     parser = get_parser()
-    #     return parser.format(self.text)
 
     def __str__(self):
         return f'{self.title}-{self.author}'

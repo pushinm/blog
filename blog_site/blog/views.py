@@ -1,33 +1,38 @@
 from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView, FormView, UpdateView, CreateView
 from testimonials.models import Testimonial
-
+from django.contrib import messages
 from testimonials.models import Testimonial
 from .models import Blog
 from .forms import BlogCreationForm
 from django.forms import modelformset_factory
 from testimonials.forms import CommentForm
 from author.models import Author
-# from icecream import ic
+from icecream import ic
 from django.db import transaction
+from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib import messages
 
 
 # Create your views here.
 
-class CreateBlog(CreateView):
+class CreateBlog(CreateView, SuccessMessageMixin):
     model = Blog
     form_class = BlogCreationForm
     template_name = 'pages/blog_create.html'
     success_url = '/'
+    success_message = f'Создана новая статья'
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.author = self.request.user
+        if self.success_message:
+            messages.success(self.request, self.success_message)
         form.save()
         return super().form_valid(form)
 
 
-class AllPAges(ListView):
+class AllPAges(ListView, HttpResponse):
     model = Blog
     template_name = 'pages/all_pages.html'
     context_object_name = 'blogs'
@@ -51,6 +56,7 @@ def blog_update(request):
         formset = BlogFormSet(request.POST)
         if formset.is_valid():
             formset.save()
+            messages.success(request, 'Статья исправлена')
             return redirect('/')
     else:
         formset = BlogFormSet()

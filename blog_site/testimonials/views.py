@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from .models import Testimonial
 from blog.models import Blog
+
+
 # Create your views here.
 
 def create_testimonial(request, blog_pk):
