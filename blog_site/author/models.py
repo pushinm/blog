@@ -21,3 +21,10 @@ class Author(AbstractUser):
         permissions = [
             ('edit_own_article', 'Can edit own articles'),
         ]
+
+
+class Profile(models.Model):
+    author = models.OneToOneField(Author, on_delete=models.CASCADE,  related_name='author_profile')
+
+    def __str__(self) -> str:
+        return self.author.username
